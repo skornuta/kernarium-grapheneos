@@ -1,0 +1,57 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
+name: prebuilt-release
+
+on:
+  workflow_dispatch:
+    inputs:
+      with_ipa:
+        description: Also publish a patched Andarium IPA
+        type: boolean
+        default: true
+      jit:
+        description: ART JIT
+        type: choice
+        options: ["off", "on"]
+        default: "off"
+  push:
+    tags: ["prebuilt-*"]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 150
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Free disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL /usr/local/share/boost
+          df -h /
+
+      - name: Build
+        env:
+          WITH_IPA: ${{ github.event_name == 'push' && '1' || (inputs.with_ipa && '1' || '0') }}
+          KGOS_JIT: ${{ inputs.jit || 'off' }}
+        run: sudo -E env "PATH=$PATH" WORK="$RUNNER_TEMP/kgos" scripts/prebuilt/build.sh
+
+      - name: Publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          . prebuilt/config.env
+          out=$RUNNER_TEMP/kgos/out
+          tag=${GITHUB_REF_NAME}
+          [ "$GITHUB_REF_TYPE" = tag ] || tag=prebuilt-$RELEASE_ID
+          files=("$out/$DIRECTORY_NAME.tar.gz" "$out/$DIRECTORY_NAME.tar.gz.sha256")
+          for f in "$out"/*.ipa; do if [ -f "$f" ]; then files+=("$f"); fi; done
+          notes=$(printf 'Derived from Kernarium %s (%s).\n\nrelease_id `%s`, build_number `%s`. See docs/prebuilt.md.\n' \
+            "$KERNARIUM_TAG" "$BASE_NAME" "$RELEASE_ID" "$BUILD_NUMBER")
+          if gh release view "$tag" >/dev/null 2>&1; then
+            gh release upload "$tag" "${files[@]}" --clobber
+          else
+            gh release create "$tag" "${files[@]}" --title "$RELEASE_ID" --notes "$notes" --target "$GITHUB_SHA"
+          fi
