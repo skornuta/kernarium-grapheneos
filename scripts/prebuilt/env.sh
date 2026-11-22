@@ -16,6 +16,7 @@ OUT=${OUT:-$WORK/out}
 KERNARIUM=$WORK/kernarium
 EROFS=${EROFS:-$WORK/erofs/bin}
 L24_TOOLS=$KERNARIUM/android/lineage-24/tools
+PY=$WORK/venv/bin/python
 
 mkdir -p "$DL" "$PARTS" "$TREE" "$IMAGES" "$OUT"
 

@@ -8,9 +8,10 @@ if [ "${SKIP_APT:-0}" != 1 ]; then
     $SUDO apt-get update -qq
     $SUDO env DEBIAN_FRONTEND=noninteractive apt-get install -y -qq \
         autoconf automake libtool pkg-config build-essential uuid-dev zlib1g-dev \
-        liblz4-dev libzstd-dev attr libcap2-bin python3-pip unzip zip curl git
+        liblz4-dev libzstd-dev attr libcap2-bin python3-venv unzip zip curl git
 fi
-python3 -c 'import androguard' 2>/dev/null || pip install -q --break-system-packages androguard==4.1.2
+[ -x "$PY" ] || python3 -m venv "$WORK/venv"
+"$PY" -c 'import androguard' 2>/dev/null || "$PY" -m pip install -q --disable-pip-version-check androguard==4.1.2
 
 if [ ! -x "$EROFS/mkfs.erofs" ]; then
     log "building erofs-utils $EROFS_UTILS_TAG"

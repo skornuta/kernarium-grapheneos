@@ -61,7 +61,7 @@ done
 rm -rf "$tmp"
 label_dirs "$gms"
 label_dirs "$vending"
-python3 "$KGOS/tools/microg.py" --ref "$WORK/ref" --cert-sha256 "$MICROG_CERT_SHA256" \
+"$PY" "$KGOS/tools/microg.py" --ref "$WORK/ref" --cert-sha256 "$MICROG_CERT_SHA256" \
     --privapp-xml "$WORK/privapp-permissions-microg.xml" "$gms/GmsCore.apk" "$vending/Phonesky.apk"
 install_file "$WORK/privapp-permissions-microg.xml" "$TREE/product/etc/permissions/privapp-permissions-microg.xml"
 install_file "$P/microg/sysconfig-microg.xml" "$TREE/product/etc/sysconfig/microg.xml"
