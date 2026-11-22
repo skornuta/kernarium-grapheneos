@@ -1,0 +1,28 @@
+# SPDX-License-Identifier: Apache-2.0
+type kernarium_ui_defaults, domain;
+typeattribute kernarium_ui_defaults coredomain;
+type kernarium_ui_defaults_exec, exec_type, system_file_type, file_type;
+
+init_daemon_domain(kernarium_ui_defaults)
+binder_use(kernarium_ui_defaults)
+
+# The shell script, and getprop, setprop, log and sleep from the toolbox.
+allow kernarium_ui_defaults shell_exec:file rx_file_perms;
+allow kernarium_ui_defaults toolbox_exec:file rx_file_perms;
+# cmd runs in the script's domain.
+allow kernarium_ui_defaults system_file:file execute_no_trans;
+
+# cmd finds the settings service and hands it the descriptors it writes the
+# output to and the binder it receives the result on: the descriptors are the
+# script's own. Without the binder transfer the service never gets the command,
+# and without the call back to that binder cmd never learns the command is done.
+allow kernarium_ui_defaults settings_service:service_manager find;
+allow kernarium_ui_defaults system_server:binder transfer;
+allow system_server kernarium_ui_defaults:binder call;
+allow system_server kernarium_ui_defaults:fd use;
+allow system_server kernarium_ui_defaults:fifo_file { getattr read write };
+
+# The marker that the script has looked at the setting.
+system_internal_prop(kernarium_ui_defaults_prop)
+set_prop(kernarium_ui_defaults, kernarium_ui_defaults_prop)
+get_prop(kernarium_ui_defaults, kernarium_ui_defaults_prop)

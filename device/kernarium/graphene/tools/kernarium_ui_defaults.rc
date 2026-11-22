@@ -1,0 +1,9 @@
+# SPDX-License-Identifier: Apache-2.0
+service kernarium_ui_defaults /system_ext/bin/kernarium_ui_defaults.sh
+    user root
+    group shell
+    oneshot
+    disabled
+
+on property:sys.boot_completed=1
+    start kernarium_ui_defaults
