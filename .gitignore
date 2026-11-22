@@ -1,0 +1,11 @@
+.DS_Store
+/out/
+/build/
+/.build/
+/aosp/
+/releases/
+*.img
+*.zip
+*.log
+*.local
+*.local.*
