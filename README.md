@@ -9,7 +9,9 @@ interpreter mode.
 | Path | Contents |
 | --- | --- |
 | `device/kernarium/graphene/` | Device tree (`graphene_andarium`), ported from Kernarium's `android/lineage-24/overlay` |
-| `scripts/` | Build VM bootstrap, source sync, patch and build scripts |
+| `scripts/` | Build VM bootstrap, source sync, patch and build scripts; `scripts/prebuilt/` for the prebuilt lane |
+| `prebuilt/` | Prebuilt lane inputs: pins, props, debloat list, microG config |
+| `tools/` | Disk split, manifest, microG and tree-diff helpers |
 | `patches/` | Route skip list and rebased series |
 | `support/` | Kernel command line and disk policy |
 | `docs/` | Bring-up notes and reference summaries |
@@ -20,9 +22,13 @@ interpreter mode.
 - Reference product: `lineage_andarium` (LineageOS 24.0 / `android-17.0.0_r1`)
 - Guest kernel: Kernarium `kernel/mainline-6.18`, Android product, 4 KiB pages
 
-## Build host
+## Prebuilt lane
 
-x86_64 Ubuntu 24.04, 16+ vCPU, 64 GiB RAM (32 GiB minimum), 300 GB SSD.
+No source build: `scripts/prebuilt/build.sh` patches Kernarium's published LineageOS 24 release (JIT off + AOT `speed`, no animations or blur, debloat, microG). GitHub Actions builds and publishes it (Actions → prebuilt-release → Run workflow). See [`docs/prebuilt.md`](docs/prebuilt.md).
+
+## Build host (GrapheneOS source lane)
+
+x86_64 Ubuntu 24.04, 8+ vCPU, 64 GiB RAM (32 GiB minimum), 300 GB SSD.
 
 ```sh
 curl -fsSL https://raw.githubusercontent.com/skornuta/kernarium-grapheneos/main/scripts/vm-bootstrap.sh | bash

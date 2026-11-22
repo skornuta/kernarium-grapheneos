@@ -1,0 +1,2 @@
+dalvik.vm.usejit=false
+dalvik.vm.usejitprofiles=false

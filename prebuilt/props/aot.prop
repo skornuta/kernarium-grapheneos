@@ -1,0 +1,9 @@
+pm.dexopt.install=speed
+pm.dexopt.install-fast=speed
+pm.dexopt.install-bulk=speed
+pm.dexopt.install-bulk-secondary=speed
+pm.dexopt.bg-dexopt=speed
+pm.dexopt.cmdline=speed
+pm.dexopt.ab-ota=speed
+pm.dexopt.shared=speed
+dalvik.vm.systemuicompilerfilter=speed

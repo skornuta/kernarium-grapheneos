@@ -9,3 +9,5 @@
 *.log
 *.local
 *.local.*
+.work/
+__pycache__/

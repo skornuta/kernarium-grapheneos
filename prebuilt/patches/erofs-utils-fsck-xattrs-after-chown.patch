@@ -1,0 +1,17 @@
+diff --git a/fsck/main.c b/fsck/main.c
+index 8f619a5..543b1f1 100644
+--- a/fsck/main.c
++++ b/fsck/main.c
+@@ -998,8 +998,11 @@ static int erofsfsck_check_inode(erofs_nid_t pnid, erofs_nid_t nid)
+ 		--fsckcfg.dirstack.top;
+ 	}
+ 
+-	if (!ret && !erofs_is_packed_inode(&inode))
++	if (!ret && !erofs_is_packed_inode(&inode)) {
+ 		erofsfsck_set_attributes(&inode, fsckcfg.extract_path);
++		if (fsckcfg.check_decomp && fsckcfg.dump_xattrs)
++			ret = erofsfsck_dump_xattrs(&inode);
++	}
+ 
+ 	if (ret == -ECANCELED)
+ 		ret = 0;
