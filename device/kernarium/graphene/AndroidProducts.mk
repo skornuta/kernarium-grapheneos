@@ -19,5 +19,5 @@ PRODUCT_MAKEFILES := \
 	graphene_andarium:$(LOCAL_DIR)/graphene_andarium.mk
 
 COMMON_LUNCH_CHOICES := \
-	graphene_andarium-cp2a-userdebug \
-	graphene_andarium-cp2a-user
+	graphene_andarium-cur-userdebug \
+	graphene_andarium-cur-user

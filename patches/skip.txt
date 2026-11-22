@@ -1,0 +1,5 @@
+# Kernarium lineage-24 routes not applied to GrapheneOS
+p0021 device/lineage/sepolicy
+p0025 packages/apps/LineageParts
+p0026 packages/apps/SetupWizard
+p0031 packages/apps/Aperture

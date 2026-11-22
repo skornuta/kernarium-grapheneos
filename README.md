@@ -9,7 +9,9 @@ interpreter mode.
 | Path | Contents |
 | --- | --- |
 | `device/kernarium/graphene/` | Device tree (`graphene_andarium`), ported from Kernarium's `android/lineage-24/overlay` |
-| `scripts/` | Source sync, patch, build and image-assembly scripts for the Linux build VM |
+| `scripts/` | Build VM bootstrap, source sync, patch and build scripts |
+| `patches/` | Route skip list and rebased series |
+| `support/` | Kernel command line and disk policy |
 | `docs/` | Bring-up notes and reference summaries |
 
 ## Reference
@@ -20,8 +22,15 @@ interpreter mode.
 
 ## Build host
 
-Source sync and compilation run on an x86_64 Ubuntu 24.04 VM (~350 GB disk). This repository holds
-only the device tree, patches and scripts.
+x86_64 Ubuntu 24.04, 16+ vCPU, 64 GiB RAM (32 GiB minimum), 300 GB SSD.
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/skornuta/kernarium-grapheneos/main/scripts/vm-bootstrap.sh | bash
+/work/kernarium-grapheneos/scripts/go.sh            # sync, patch, build in tmux session "build"
+tmux attach -t build
+```
+
+`go.sh` takes any of `sync patch build`. `GRAPHENE_REF` (default `17`), `VARIANT` (default `userdebug`) and `ALLOW_FAIL=1` pass through. Logs and `patch-report.tsv` go to `/work/logs`.
 
 ## Status
 
