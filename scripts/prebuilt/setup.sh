@@ -6,7 +6,7 @@ set -euo pipefail
 if [ "${SKIP_APT:-0}" != 1 ]; then
     SUDO=; [ "$(id -u)" = 0 ] || SUDO=sudo
     $SUDO apt-get update -qq
-    $SUDO DEBIAN_FRONTEND=noninteractive apt-get install -y -qq \
+    $SUDO env DEBIAN_FRONTEND=noninteractive apt-get install -y -qq \
         autoconf automake libtool pkg-config build-essential uuid-dev zlib1g-dev \
         liblz4-dev libzstd-dev attr libcap2-bin python3-pip unzip zip curl git
 fi
